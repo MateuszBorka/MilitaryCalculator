@@ -57,23 +57,6 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doGet(req, resp);
-
-
-
-        String username = req.getParameter("field1");
-        boolean flag = false;
-        Cookie[] cookies = req.getCookies();
-        for (Cookie cookie : cookies) {
-            if (cookie.getName().equals("userId")) {
-                String userId = cookie.getValue();
-                if (Objects.equals(userId, username)){
-                    flag = true;
-                }
-            }
-        }
-
-
-        if (!flag){
             resp.setContentType("text/html");
             PrintWriter out = resp.getWriter();
             out.println("<html><body>");
@@ -85,24 +68,19 @@ public class MainServlet extends HttpServlet {
                     "  <input type=\"text\" id=\"field2\" name=\"field2\"><br><br>\n" +
                     "  <input type=\"submit\" value=\"Submit\">\n" +
                     "</form> ");
-
             out.println("</body></html>");
-        }
-        else {
-            CalculatorPage(req, resp);
-        }
+
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String field1Value = req.getParameter("field1");
+
+        System.out.println(field1Value);
         String field2Value = req.getParameter("field2");
         System.out.println(field1Value + field2Value);
-        if (canLogIn(field1Value, field2Value)) {
-            Cookie cookie = new Cookie("userId", field1Value);
-            cookie.setMaxAge(60 * 60); // Set cookie to expire in 1 hour
-            resp.addCookie(cookie);
+        if (canLogIn(field1Value, field2Value) || field1Value == null) {
             CalculatorPage(req, resp);
         }
         else doGet(req, resp);

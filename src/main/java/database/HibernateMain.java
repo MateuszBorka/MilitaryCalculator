@@ -88,6 +88,7 @@ public class HibernateMain {
     }
 
     public static boolean canLogIn(String username, String password){
+        if (username == null) return false;
         if (!checkUsersExistanse(username, password)) return false;
 
 
