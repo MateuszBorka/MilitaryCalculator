@@ -28,18 +28,18 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doGet(req, resp);
-        resp.setContentType("text/html");
-        PrintWriter out = resp.getWriter();
-
-        out.println("<html><body>");
-        out.println("<h1>Military Calculator was deployed</h1>");
-        out.println("<form action=\"http://localhost:8080/my-app/my-servlet\" method=\"post\">\n" +
-                "   <label for=\"task\">Enter your task:</label>"+
-                "   <input type=\"text\" id=\"task\" name=\"task\" placeholder = \"There\">"+
-                "   <!-- Form fields -->\n" +
-                "   <button type=\"submit\">Submit</button>\n" +
-                "</form>");
-        out.println("</body></html>");
+//        resp.setContentType("text/html");
+//        PrintWriter out = resp.getWriter();
+//
+//        out.println("<html><body>");
+//        out.println("<h1>Military Calculator was deployed</h1>");
+//        out.println("<form action=\"http://localhost:8080/my-app/my-servlet\" method=\"post\">\n" +
+//                "   <label for=\"task\">Enter your task:</label>"+
+//                "   <input type=\"text\" id=\"task\" name=\"task\" placeholder = \"There\">"+
+//                "   <!-- Form fields -->\n" +
+//                "   <button type=\"submit\">Submit</button>\n" +
+//                "</form>");
+//        out.println("</body></html>");
     }
 
     @Override
