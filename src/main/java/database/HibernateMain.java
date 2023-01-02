@@ -2,6 +2,7 @@ package database;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,7 +49,7 @@ public class HibernateMain {
 
         Session session = getSession();
         session.beginTransaction();
-        System.out.println(session);
+        //System.out.println(session);
         Transaction transaction = session.getTransaction();
 
         CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -67,5 +68,45 @@ public class HibernateMain {
         return true;
     }
 
+    public static boolean checkUsersExistanse(String username, String password){
 
+        Session session = getSession();
+        session.beginTransaction();
+        //System.out.println(session);
+        Transaction transaction = session.getTransaction();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<User> cr = cb.createQuery(User.class);
+        Root<User> root = cr.from(User.class);
+
+        cr.select(root).where(cb.equal(root.get("username"), username));
+
+        Query<User> query = session.createQuery(cr);
+        List<User> results = query.getResultList();
+        if (results.size() != 0) return true;
+        return false;
+    }
+
+    public static boolean canLogIn(String username, String password){
+        if (!checkUsersExistanse(username, password)) return false;
+
+
+        Session session = getSession();
+        session.beginTransaction();
+        //System.out.println(session);
+        Transaction transaction = session.getTransaction();
+
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<User> cr = cb.createQuery(User.class);
+        Root<User> root = cr.from(User.class);
+
+        Predicate usernameRight = cb.equal(root.get("username"), username);
+        Predicate passwordRight = cb.equal(root.get("password"), password);
+        cr.select(root).where(cb.and(usernameRight, passwordRight));
+
+        Query<User> query = session.createQuery(cr);
+        List<User> results = query.getResultList();
+        if (results.size() != 0) return true;
+        return false;
+    }
 }
