@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
-import javax.servlet.http.Cookie;
 import static database.HibernateMain.canLogIn;
 
 public class MainServlet extends HttpServlet {
@@ -31,12 +29,10 @@ public class MainServlet extends HttpServlet {
         out.println("</body></html>");
 
         String expression = req.getParameter("task");
-        //PrintWriter out = resp.getWriter();
 
         try {
             Expression answer = new ExpressionBuilder(expression).build();
             double result = answer.evaluate();
-            //System.out.println("The answer is " + result);
             out.println("The answer is " + result);
         } catch (IllegalArgumentException e){
             out.println("Incorrect expression");
@@ -51,29 +47,27 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.service(req, resp);
-        //resp.getWriter().write("Method service\n");
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doGet(req, resp);
-            resp.setContentType("text/html");
-            PrintWriter out = resp.getWriter();
-            out.println("<html><body>");
-            out.println("<h3>Hello. Prove you connections with the army.</h3>");
-            out.println("<form action=\"http://localhost:8080/my-app/my-servlet\" method=\"post\">\n" +
-                    "  <label for=\"field1\">Login</label><br>\n" +
-                    "  <input type=\"text\" id=\"field1\" name=\"field1\"><br>\n" +
-                    "  <label for=\"field2\">Password</label><br>\n" +
-                    "  <input type=\"text\" id=\"field2\" name=\"field2\"><br><br>\n" +
-                    "  <input type=\"submit\" value=\"Submit\">\n" +
-                    "</form> ");
-            out.println("</body></html>");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html");
+        PrintWriter out = resp.getWriter();
+        out.println("<html><body>");
+        out.println("<h3>Hello. Prove you connections with the army.</h3>");
+        out.println("<form action=\"http://localhost:8080/my-app/my-servlet\" method=\"post\">\n" +
+                "  <label for=\"field1\">Login</label><br>\n" +
+                "  <input type=\"text\" id=\"field1\" name=\"field1\"><br>\n" +
+                "  <label for=\"field2\">Password</label><br>\n" +
+                "  <input type=\"text\" id=\"field2\" name=\"field2\"><br><br>\n" +
+                "  <input type=\"submit\" value=\"Submit\">\n" +
+                "</form> ");
+        out.println("</body></html>");
 
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         String field1Value = req.getParameter("field1");
 
@@ -84,10 +78,6 @@ public class MainServlet extends HttpServlet {
             CalculatorPage(req, resp);
         }
         else doGet(req, resp);
-
-        //super.doPost(req, resp);
-        //CalculatorPage(req, resp);
-
     }
 
     @Override

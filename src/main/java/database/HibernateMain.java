@@ -45,9 +45,10 @@ public class HibernateMain {
     }
 
 
-    public static boolean createUser(String username, String password){
+    public static void createUser(String username, String password){
 
         Session session = getSession();
+        assert session != null;
         session.beginTransaction();
         //System.out.println(session);
         Transaction transaction = session.getTransaction();
@@ -60,43 +61,20 @@ public class HibernateMain {
 
         Query<User> query = session.createQuery(cr);
         List<User> results = query.getResultList();
-        if (results.size() != 0) return false;
+        if (results.size() != 0) return;
         User usr1 = new User(username, password);
         session.persist(usr1);
         transaction.commit();
 
-        return true;
-    }
-
-    public static boolean checkUsersExistanse(String username, String password){
-
-        Session session = getSession();
-        session.beginTransaction();
-        //System.out.println(session);
-        Transaction transaction = session.getTransaction();
-
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<User> cr = cb.createQuery(User.class);
-        Root<User> root = cr.from(User.class);
-
-        cr.select(root).where(cb.equal(root.get("username"), username));
-
-        Query<User> query = session.createQuery(cr);
-        List<User> results = query.getResultList();
-        if (results.size() != 0) return true;
-        return false;
     }
 
     public static boolean canLogIn(String username, String password){
         if (username == null) return false;
-        if (!checkUsersExistanse(username, password)) return false;
 
 
         Session session = getSession();
+        assert session != null;
         session.beginTransaction();
-        //System.out.println(session);
-        Transaction transaction = session.getTransaction();
-
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<User> cr = cb.createQuery(User.class);
         Root<User> root = cr.from(User.class);
